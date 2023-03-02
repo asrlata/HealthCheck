@@ -22,9 +22,9 @@
 <div class="row mb-3">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <center><h1>Malaria Predictor</h1></center>
+        <center><h1>Covid Predictor</h1></center>
         <div class="card card-body">
-            <center><h3>Please upload the image of the cell</h3></center>
+            <center><h3>Please upload the xray image of the lungs</h3></center>
             <form class="form-horizontal" action="{{ url_for('malariapredict') }}" method="POST" enctype="multipart/form-data">
                 <center>
                 <input onchange="readURL(this);" type="file" name="image" placeholder="Upload Image">
