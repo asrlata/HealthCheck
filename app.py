@@ -5,11 +5,17 @@ import numpy as np
 import joblib
 from tensorflow.keras.models import load_model
 from PIL import Image
+import cv2
 import tensorflow as tf
+from werkzeug.utils import secure_filename
+import os
 
 
 app = Flask(__name__)
 app.secret_key = 'O.\x89\xcc\xa0>\x96\xf7\x871\xa2\xe6\x9a\xe4\x14\x91\x0e\xe5)\xd9'
+
+UPLOAD_FOLDER = 'static/uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load the Random Forest CLassifier model
 filename = 'Models/diabetes-model.pkl'
@@ -245,20 +251,31 @@ def malaria():
 @app.route("/malariapredict", methods=['POST', 'GET'])
 def malariapredict():
     if request.method == 'POST':
-        try:
+        #try:
             if 'image' in request.files:
-                img = Image.open(request.files['image'])
-                img = img.resize((50, 50))
-                img = np.asarray(img)
-                img = img.reshape((1, 50, 50, 3))
-                img = img.astype(np.float64)
+                file1 = request.files['image']
+                
+           
+                imageFileName = secure_filename(file1.filename)
+                print(imageFileName)
+                file1.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
+                #img = Image.open(file1)
 
-                model_path = "Models/malaria-model.h5"
+                cov_predict = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
+                imgs = cv2.cvtColor(cov_predict,cv2.COLOR_BGR2RGB)
+                resized = cv2.resize(imgs,(224,224), interpolation = cv2.INTER_AREA)
+                covid = np.array(resized) / 255.0
+                predicting = covid.reshape((1,224,224,3))
+
+
+                model_path = "Models/xray_covid.h5"
                 model = tf.keras.models.load_model(model_path)
-                pred = np.argmax(model.predict(img)[0])
-        except:
-            message = "Please upload an Image"
-            return render_template('malaria.html', message=message)
+                predictMod = model.predict(predicting,batch_size=1)
+                pred = np.argmax(predictMod, axis=1)
+                
+        #except:
+            #message = "Please upload an Image"
+            #return render_template('malaria.html', message=message)
     return render_template('malaria_predict.html', pred=pred)
 
 
