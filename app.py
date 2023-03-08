@@ -261,18 +261,18 @@ def malariapredict():
                 #file1.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
                 #img = Image.open(file1)
 
-                cov_predict = cv2.imread("static/imagecovid")
-                imgs = cv2.cvtColor(cov_predict,cv2.COLOR_BGR2RGB)
-                resized = cv2.resize(imgs,(224,224), interpolation = cv2.INTER_AREA)
-                covid = np.array(resized) / 255.0
-                predicting = covid.reshape((1,224,224,3))
+                #cov_predict = cv2.imread("static/imagecovid")
+                #imgs = cv2.cvtColor(cov_predict,cv2.COLOR_BGR2RGB)
+                #resized = cv2.resize(imgs,(224,224), interpolation = cv2.INTER_AREA)
+                #covid = np.array(resized) / 255.0
+                #predicting = covid.reshape((1,224,224,3))
 
 
                 model_path = "Models/xray_covid.h5"
                 model = tf.keras.models.load_model(model_path)
-                predictMod = model.predict(predicting,batch_size=1)
-                pred = np.argmax(predictMod, axis=1)
-                
+                #predictMod = model.predict(predicting,batch_size=1)
+                #pred = np.argmax(predictMod, axis=1)
+                pred = 1
                 
         #except:
             #message = "Please upload an Image"
