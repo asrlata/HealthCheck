@@ -261,7 +261,7 @@ def malariapredict():
                 file1.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
                 #img = Image.open(file1)
 
-                cov_predict = cv2.imread("static/uploads/imagecovid.jpg")
+                cov_predict = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
                 imgs = cv2.cvtColor(cov_predict,cv2.COLOR_BGR2RGB)
                 resized = cv2.resize(imgs,(224,224), interpolation = cv2.INTER_AREA)
                 covid = np.array(resized) / 255.0
