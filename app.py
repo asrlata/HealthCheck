@@ -256,9 +256,9 @@ def malariapredict():
                 file1 = request.files['image']
                 
            
-                #imageFileName = secure_filename(file1.filename)
+                imageFileName = secure_filename(file1.filename)
                 #print(imageFileName)
-                #file1.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
+                file1.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
                 #img = Image.open(file1)
 
                 cov_predict = cv2.imread("static/uploads/imagecovid.jpg")
